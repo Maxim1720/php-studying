@@ -17,5 +17,5 @@ To deploy this project off ospanel, run commands then and run ospanel again
 
 ```bash
   git clone https://github.com/Maxim1720/php-studying.git
-  copy php-studying\* <path to ospanel>\domains\
+  xcopy php-studying\ <path to ospanel>\domains\ /E/H
 ```
