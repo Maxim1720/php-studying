@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <form action="php/registration.php" method="post">
+        <div class="input-field">
+            <label for="name">Имя</label>
+            <input type="text" name="name">
+        </div>
+        <div class="input-field">
+            <label for="mail">Почта</label>
+            <input type="email" name="mail">
+        </div>
+        <div class="input-field">
+            <label for="password">Пароль</label>
+            <input type="password" name="password">
+        </div>
+        <div class="input-field">
+            <input class="input-btn" type="submit" value="registration">
+        </div>
+    </form>
+</body>
+
+</html>

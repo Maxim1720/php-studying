@@ -1,0 +1,24 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.input-field{
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 250px;
+}
+
+.input-field label{
+    margin-right: 10px;
+}
+
+.input-btn{
+    border-radius: 20px;
+    padding: 4px;
+    width: 100px;
+    background-color: #f88d00;
+    border: none;
+    align-self:center;
+}
