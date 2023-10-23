@@ -11,4 +11,4 @@ To deploy this project off ospanel, run commands then and run ospanel again
 ```
 
 ## Readme created with
-[Readme.so](readme.so)
+[Readme.so](https://www.readme.so)
