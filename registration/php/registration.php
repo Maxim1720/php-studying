@@ -1,38 +1,29 @@
 <?php
-function fieldsNotEmpty($fields)
-{
-    foreach ($fields as $val) {
-        if (empty($val)) {
-            return false;
-        }
-    }
-    return true;
-}
+include("user.php");
 
-function validateEmail($email)
-{
-    return filter_var($email, FILTER_VALIDATE_EMAIL);
-}
-function checkInputs()
-{
-    $name = $_POST["name"];
-    $email = $_POST["mail"];
-    $password = $_POST["password"];
-
-    $fields = [$name, $email, $password];
-    if (!fieldsNotEmpty($fields)) {
-        echo "All fields must be filled!!!";
-    } else if (!validateEmail($email)) {
-        echo "Invalid email!";
-    } else {
-        echo "Registration sucessfully";
-    }
-}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    checkInputs();
+    $user = new User($_POST["name"], $_POST["mail"], $_POST["password"]);
+    if (UserValidator::validate($user)) {
+        $user->setPassword(
+            password_hash($user->getPassword(), PASSWORD_DEFAULT)
+        );
+        $userRegistrer = createRegistrer();
+        $user = $userRegistrer->register($user);
+        
+        echo "User succefully registered!!";
+        echo "".$user;
+    }
+    else{
+        echo var_dump(UserValidator::getErrors());
+    }
 } else {
     echo "Expected post method with name, email, password";
+}
+
+function createRegistrer() : UserRegistrer
+{
+    return new UserRegistrer("registration:5432", "postgres", "postgres", "users");
 }
 
 ?>
