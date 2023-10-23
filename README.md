@@ -12,7 +12,7 @@
 
 
 ## Deployment
-
+### Windows
 To deploy this project off ospanel, run commands then and run ospanel again
 
 ```bash
