@@ -40,6 +40,10 @@ class User
     {
         return $this->password;
     }
+
+    public function __toString(): string{
+        return $this->name ." ". $this->email ." ". $this->password;
+    }
 }
 
 class UserValidator
@@ -89,7 +93,6 @@ class UserValidator
 
 class UserRegistrer
 {
-    private $host;
     private $username;
     private $password;
     private PDO $db;
@@ -97,20 +100,35 @@ class UserRegistrer
 
     public function __construct($host, $username, $password, $dbname)
     {
-        $this->host = $host;
         $this->username = $username;
         $this->password = $password;
-        $this->db = new PDO("psql:host=$host;dbname=$dbname", $this->username, $this->password);
+        $this->db = new PDO("pgsql:host=$host;dbname=$dbname", $this->username, $this->password);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
 
     public function register(User $user): User
     {
-        $this->db->query("insert into users values(null, {$user->getEmail()}, {$user->getName()}, {$user->getPassword()});", PDO::FETCH_INTO, $user);
-        $this->db->commit();
-        // $user->setId($this::db->lastInsertId());
+        // $this->db->query("insert into users values(null, {$user->getEmail()}, {$user->getName()}, {$user->getPassword()});", PDO::FETCH_INTO, $user);
+
+        $stmt = $this->db->prepare("INSERT INTO users (email, name, password) VALUES (:email, :name, :password)");
+        $stmt->bindParam(':email', $user->getEmail(), PDO::PARAM_STR);
+        $stmt->bindParam(':name', $user->getName(), PDO::PARAM_STR);
+        $stmt->bindParam(':password', $user->getPassword()); // Здесь должен быть хешированный пароль
+        $stmt->execute();
+
+
+        // $this->db->commit();
+        $user->setId($this->db->lastInsertId());
         return $user;
     }
 }
-?>
+
+class UserRegisterFabric
+{
+
+    public static function postgresDbInstance(): UserRegistrer
+    {
+        return new UserRegistrer("registration", "postgres", "postgres", "users");
+    }
+}
